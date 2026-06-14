@@ -25,6 +25,10 @@ export default function QRCodePage() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [selectedLocId, setSelectedLocId] = useState<string>("");
   const [color, setColor] = useState("#4f46e5"); // Indigo default
+  const [headerColor, setHeaderColor] = useState("#0f172a"); // Dark slate
+  const [template, setTemplate] = useState<"classic" | "minimal">("classic");
+  const [headingText, setHeadingText] = useState("Love our service?");
+  const [subheadingText, setSubheadingText] = useState("Scan to leave a review!");
   const [qrUrl, setQrUrl] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
@@ -97,16 +101,16 @@ export default function QRCodePage() {
       // Use pixelRatio: 5 for ultra-sharp print resolution (Retina quality)
       const imgData = await htmlToImage.toJpeg(printRef.current, { quality: 1.0, pixelRatio: 5 });
       
+      const nodeWidth = printRef.current.offsetWidth;
+      const nodeHeight = printRef.current.offsetHeight;
+      
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "px",
-        format: [420, 700]
+        format: [nodeWidth, nodeHeight]
       });
 
-      // For portrait A4-style proportions, or specific sizes. Here we use 420x700 mapping.
-      // We know printRef width is 420. Height is around 700.
-      const nodeHeight = printRef.current.offsetHeight;
-      pdf.addImage(imgData, "JPEG", 0, 0, 420, nodeHeight);
+      pdf.addImage(imgData, "JPEG", 0, 0, nodeWidth, nodeHeight);
       pdf.save("ReviewFlow_QR_Card.pdf");
     } catch (err) {
       console.error("Failed to generate PDF", err);
@@ -170,6 +174,50 @@ export default function QRCodePage() {
                 </div>
               </div>
 
+              <div className="space-y-3">
+                <Label className="text-base font-semibold">Header Color</Label>
+                <div className="flex gap-4 items-center">
+                  <div className="relative overflow-hidden rounded-full w-14 h-14 shadow-inner border-[3px] border-background cursor-pointer hover:scale-105 transition-transform ring-2 ring-primary/20">
+                    <Input type="color" value={headerColor} onChange={(e) => setHeaderColor(e.target.value)} className="absolute inset-0 w-24 h-24 -top-4 -left-4 cursor-pointer p-0 border-0" />
+                  </div>
+                  <Input type="text" value={headerColor} onChange={(e) => setHeaderColor(e.target.value)} className="w-32 font-mono uppercase shadow-sm h-12 rounded-xl" />
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <Label className="text-base font-semibold">Stand Design Template</Label>
+                <select 
+                  className="flex h-12 w-full rounded-xl border border-input/50 bg-background px-4 py-2 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  value={template}
+                  onChange={(e) => setTemplate(e.target.value as "classic" | "minimal")}
+                >
+                  <option value="classic">Classic (Color Header)</option>
+                  <option value="minimal">Minimalist (Pure White)</option>
+                </select>
+              </div>
+
+              <div className="space-y-3">
+                <Label className="text-base font-semibold">Heading Text</Label>
+                <Input 
+                  type="text" 
+                  value={headingText} 
+                  onChange={(e) => setHeadingText(e.target.value)} 
+                  className="h-12 rounded-xl"
+                  maxLength={40}
+                />
+              </div>
+
+              <div className="space-y-3">
+                <Label className="text-base font-semibold">Subheading Text</Label>
+                <Input 
+                  type="text" 
+                  value={subheadingText} 
+                  onChange={(e) => setSubheadingText(e.target.value)} 
+                  className="h-12 rounded-xl"
+                  maxLength={60}
+                />
+              </div>
+
               {qrUrl && (
                 <div className="pt-6 border-t border-muted/50">
                   <div className="grid grid-cols-2 gap-3">
@@ -203,6 +251,10 @@ export default function QRCodePage() {
                   logoUrl={selectedLoc.logo_url}
                   qrUrl={qrUrl}
                   color={color}
+                  headerColor={headerColor}
+                  template={template}
+                  headingText={headingText}
+                  subheadingText={subheadingText}
                 />
               </div>
             </motion.div>
