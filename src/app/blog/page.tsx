@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { blogPosts } from "@/lib/blog-data";
 import { ArrowRight, Clock, Calendar } from "lucide-react";
-import Navbar from "@/components/landing/Navbar";
+import { Navbar } from "@/components/landing/Navbar";
 
 export const metadata = {
   title: "Blog & Resources",
