@@ -34,18 +34,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   // Very basic markdown to HTML for MVP
   const formattedContent = post.content
-    .split('\\n\\n')
+    .split('\n\n')
     .map(paragraph => {
       if (paragraph.trim().startsWith('# ')) {
-        return \`<h1 class="text-3xl font-black mt-8 mb-4 text-slate-900">\${paragraph.replace('# ', '')}</h1>\`;
+        return `<h1 class="text-3xl font-black mt-8 mb-4 text-slate-900">${paragraph.replace('# ', '')}</h1>`;
       }
       if (paragraph.trim().startsWith('## ')) {
-        return \`<h2 class="text-2xl font-bold mt-8 mb-4 text-slate-900">\${paragraph.replace('## ', '')}</h2>\`;
+        return `<h2 class="text-2xl font-bold mt-8 mb-4 text-slate-900">${paragraph.replace('## ', '')}</h2>`;
       }
       if (paragraph.trim().startsWith('*') && paragraph.trim().endsWith('*')) {
-         return \`<p class="text-lg italic text-slate-700 my-4 border-l-4 border-emerald-500 pl-4 bg-emerald-50/50 py-2">\${paragraph.replace(/\\*/g, '')}</p>\`;
+         return `<p class="text-lg italic text-slate-700 my-4 border-l-4 border-emerald-500 pl-4 bg-emerald-50/50 py-2">${paragraph.replace(/\*/g, '')}</p>`;
       }
-      return \`<p class="text-lg text-slate-700 leading-relaxed my-4">\${paragraph.trim().replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>').replace(/\\*(.*?)\\*/g, '<em>$1</em>')}</p>\`;
+      return `<p class="text-lg text-slate-700 leading-relaxed my-4">${paragraph.trim().replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>')}</p>`;
     })
     .join('');
 
