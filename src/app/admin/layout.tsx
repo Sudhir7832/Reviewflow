@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Lock, LayoutDashboard, Users, Settings } from "lucide-react";
+import { Lock, LayoutDashboard, Users, Settings, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -12,6 +12,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
   const [mounted, setMounted] = useState(false);
@@ -125,9 +126,65 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Admin Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="h-16 bg-slate-900 border-b border-slate-800 flex items-center px-6 sticky top-0 z-10 md:hidden">
-          <div className="font-bold text-xl text-white">Super Admin</div>
+        <header className="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 sticky top-0 z-20 md:hidden">
+          <div className="flex items-center gap-2">
+            <img src="/logo-v2.png" alt="ReviewFlow Logo" className="w-8 h-8 object-contain" />
+            <div className="font-bold text-xl text-white">Super Admin</div>
+          </div>
+          <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(true)} className="text-slate-300 hover:text-white">
+            <Menu className="w-6 h-6" />
+          </Button>
         </header>
+        
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <div className="fixed inset-0 z-50 bg-slate-950 md:hidden flex flex-col">
+            <div className="h-16 flex items-center justify-between px-6 border-b border-slate-800">
+              <div className="flex items-center gap-2">
+                <img src="/logo-v2.png" alt="ReviewFlow Logo" className="w-8 h-8 object-contain" />
+                <span className="font-bold text-xl tracking-tighter text-white">Super Admin</span>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-300 hover:text-white">
+                <X className="w-6 h-6" />
+              </Button>
+            </div>
+            <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+              <div className="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Menu</div>
+              {routes.map((route) => {
+                const isActive = pathname === route.href;
+                return (
+                  <Link
+                    key={route.name}
+                    href={route.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center gap-3 px-3 py-4 rounded-lg text-base font-medium transition-colors ${
+                      isActive
+                        ? "bg-indigo-500/10 text-indigo-400"
+                        : "text-slate-400 hover:bg-slate-800/50 hover:text-slate-200"
+                    }`}
+                  >
+                    {route.icon}
+                    {route.name}
+                  </Link>
+                );
+              })}
+              
+              <div className="pt-8 border-t border-slate-800 mt-8">
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-start text-slate-400 hover:text-white hover:bg-slate-800 py-6"
+                  onClick={() => {
+                    sessionStorage.removeItem("admin_auth");
+                    setIsAuthenticated(false);
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  <Lock className="w-5 h-5 mr-3" /> Lock Dashboard
+                </Button>
+              </div>
+            </nav>
+          </div>
+        )}
         <main className="flex-1 overflow-auto p-6 md:p-8">
           {children}
         </main>
