@@ -95,7 +95,6 @@ export const QRStandTemplate = forwardRef<HTMLDivElement, QRStandTemplateProps>(
                {logoUrl ? (
                  <img 
                    src={logoUrl} 
-                   src={logoUrl} 
                    alt={businessName} 
                    className="w-[90px] h-[90px] object-cover rounded-[20px] shadow-sm bg-white mb-6" 
                    crossOrigin="anonymous" 
