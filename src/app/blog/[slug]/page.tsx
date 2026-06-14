@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, User, Clock } from "lucide-react";
 import Link from "next/link";
 import { Navbar } from "@/components/landing/Navbar";
-import ReactMarkdown from 'react-markdown'; // We might need to install this, or just use basic HTML if we don't have it. Since we don't want to run npm install, we will parse basic markdown manually or just render it carefully.
+
 
 // For MVP, we will render the markdown text safely or just use simple formatting since it's hardcoded.
 // Since we wrote the markdown with # and ##, we can do a simple custom renderer to avoid dependencies.
