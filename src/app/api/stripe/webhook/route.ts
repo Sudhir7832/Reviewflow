@@ -31,7 +31,7 @@ export async function POST(req: Request) {
   if (event.type === "checkout.session.completed") {
     const subscription = await stripe.subscriptions.retrieve(
       session.subscription as string
-    ) as Stripe.Subscription;
+    ) as any;
 
     if (!session?.metadata?.userId) {
       return new NextResponse("User ID missing from session metadata", { status: 400 });
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
   }
 
   if (event.type === "customer.subscription.updated" || event.type === "customer.subscription.deleted") {
-    const subscription = event.data.object as Stripe.Subscription;
+    const subscription = event.data.object as any;
     const userId = subscription.metadata?.userId;
 
     if (userId) {
