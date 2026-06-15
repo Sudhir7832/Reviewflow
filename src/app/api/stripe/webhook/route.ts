@@ -31,7 +31,7 @@ export async function POST(req: Request) {
   if (event.type === "checkout.session.completed") {
     const subscription = await stripe.subscriptions.retrieve(
       session.subscription as string
-    );
+    ) as Stripe.Subscription;
 
     if (!session?.metadata?.userId) {
       return new NextResponse("User ID missing from session metadata", { status: 400 });
