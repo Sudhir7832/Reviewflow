@@ -67,7 +67,7 @@ export default function LoginPage() {
         <CardHeader className="space-y-2 pt-8">
           <CardTitle className="text-3xl font-bold tracking-tight text-center text-slate-900">Welcome Back</CardTitle>
           <CardDescription className="text-center text-base">
-            Log in to your ReviewFlow dashboard
+            Log in to your ReppulseAI dashboard
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6 pt-4">

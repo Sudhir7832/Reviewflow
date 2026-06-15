@@ -81,7 +81,7 @@ export default function QRCodePage() {
       const downloadLink = document.createElement("a");
       downloadLink.href = dataUrl;
       const selectedLoc = locations.find(l => l.id === selectedLocId);
-      downloadLink.download = `ReviewFlow_QR_Stand_${selectedLoc?.name.replace(/\s+/g, '_') || 'Stand'}.png`;
+      downloadLink.download = `ReppulseAI_QR_Stand_${selectedLoc?.name.replace(/\s+/g, '_') || 'Stand'}.png`;
       document.body.appendChild(downloadLink);
       downloadLink.click();
       document.body.removeChild(downloadLink);
@@ -111,7 +111,7 @@ export default function QRCodePage() {
       });
 
       pdf.addImage(imgData, "JPEG", 0, 0, nodeWidth, nodeHeight);
-      pdf.save("ReviewFlow_QR_Card.pdf");
+      pdf.save("ReppulseAI_QR_Card.pdf");
     } catch (err) {
       console.error("Failed to generate PDF", err);
       alert(`Failed to generate PDF: ${err instanceof Error ? err.message : String(err)}`);

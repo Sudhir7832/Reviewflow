@@ -38,8 +38,7 @@ export function Header() {
           <Menu className="w-5 h-5" />
         </Button>
         <div className="flex items-center gap-2 md:hidden">
-          <img src="/logo-v2.png" alt="ReviewFlow Logo" className="w-8 h-8 object-contain" />
-          <span className="font-bold text-xl tracking-tighter text-slate-900">ReviewFlow</span>
+          <img src="/logo-v2.png" alt="ReppulseAI Logo" className="h-14 w-auto rounded-md object-contain" />
         </div>
       </div>
       <div className="flex items-center gap-4">
@@ -75,10 +74,9 @@ export function Header() {
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-50 bg-background md:hidden flex flex-col">
           <div className="h-16 flex items-center justify-between px-6 border-b">
-            <div className="flex items-center gap-2">
-              <img src="/logo-v2.png" alt="ReviewFlow Logo" className="w-8 h-8 object-contain" />
-              <span className="font-bold text-xl tracking-tighter text-slate-900">ReviewFlow</span>
-            </div>
+            <Link href="/" className="flex items-center gap-2 mb-6">
+              <img src="/logo-v2.png" alt="ReppulseAI Logo" className="h-14 w-auto rounded-md object-contain" />
+            </Link>
             <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
               <X className="w-6 h-6" />
             </Button>

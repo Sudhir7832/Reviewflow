@@ -20,13 +20,13 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | ReviewFlow",
-    default: "ReviewFlow - Capture 5-Star Reviews & Intercept Bad Ones",
+    template: "%s | ReppulseAI",
+    default: "ReppulseAI - Capture 5-Star Reviews & Intercept Bad Ones",
   },
   description: "Protect your business reputation. Get more 5-star Google reviews and privately intercept negative feedback before it goes public.",
   keywords: ["reputation management", "google reviews", "business reviews", "intercept negative reviews"],
   openGraph: {
-    title: "ReviewFlow - Capture 5-Star Reviews & Intercept Bad Ones",
+    title: "ReppulseAI - Capture 5-Star Reviews & Intercept Bad Ones",
     description: "Protect your business reputation. Get more 5-star Google reviews and privately intercept negative feedback before it goes public.",
     type: "website",
     locale: "en_US",

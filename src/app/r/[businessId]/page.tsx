@@ -326,8 +326,8 @@ export default function ReviewScanPage() {
         <div className="mt-8 pt-6 pb-2 w-full flex flex-col items-center justify-center opacity-50 hover:opacity-100 transition-opacity">
           <span className="text-[10px] font-bold tracking-widest uppercase text-slate-400 mb-1">Powered by</span>
           <div className="flex items-center gap-1.5">
-            <img src="/logo-v2.png" alt="ReviewFlow" className="w-5 h-5 object-contain grayscale" crossOrigin="anonymous" />
-            <span className="text-[14px] font-black tracking-tight text-slate-400">ReviewFlow</span>
+            <img src="/logo-v2.png" alt="ReppulseAI" className="h-5 w-auto object-contain grayscale" crossOrigin="anonymous" />
+            <span className="text-[14px] font-black tracking-tight text-slate-400">ReppulseAI</span>
           </div>
         </div>
       </main>

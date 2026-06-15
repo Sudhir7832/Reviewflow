@@ -140,7 +140,7 @@ function LiveReviewContent() {
       
       <div className="mt-8 text-center">
         <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
-          Powered by <Star className="w-3 h-3 fill-primary text-primary" /> ReviewFlow
+          Powered by <Star className="w-3 h-3 fill-primary text-primary" /> ReppulseAI
         </p>
       </div>
     </div>

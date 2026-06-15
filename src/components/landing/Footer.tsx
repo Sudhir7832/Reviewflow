@@ -6,8 +6,7 @@ export function Footer() {
       <div className="container mx-auto px-4 grid md:grid-cols-4 gap-8">
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <img src="/logo-v2.png" alt="ReviewFlow Logo" className="w-8 h-8 object-contain" />
-            <span className="font-bold text-xl tracking-tighter">ReviewFlow</span>
+            <img src="/logo-v2.png" alt="ReppulseAI Logo" className="h-14 w-auto rounded-md object-contain" />
           </div>
           <p className="text-muted-foreground text-sm">
             AI-powered review generation and QR code management for modern businesses.
@@ -38,7 +37,7 @@ export function Footer() {
         </div>
       </div>
       <div className="container mx-auto px-4 mt-12 pt-8 border-t text-center text-sm text-muted-foreground">
-        &copy; {new Date().getFullYear()} ReviewFlow. All rights reserved.
+        &copy; {new Date().getFullYear()} ReppulseAI. All rights reserved.
       </div>
     </footer>
   );

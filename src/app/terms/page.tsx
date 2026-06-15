@@ -10,7 +10,7 @@ export default function TermsPage() {
         <div className="prose prose-slate max-w-none text-slate-700 space-y-6">
           <p>Last updated: {new Date().toLocaleDateString()}</p>
           <h2 className="text-2xl font-bold mt-8">1. Acceptance of Terms</h2>
-          <p>By using ReviewFlow, you agree to these terms. If you do not agree, please do not use our service.</p>
+          <p>By using ReppulseAI, you agree to these terms. If you do not agree, please do not use our service.</p>
           <h2 className="text-2xl font-bold mt-8">2. Service Usage Limits</h2>
           <p>Free plans are strictly limited to the quotas defined on our pricing page. Any attempt to bypass these limits may result in account termination.</p>
           <h2 className="text-2xl font-bold mt-8">3. Content Responsibility</h2>

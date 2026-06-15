@@ -85,8 +85,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Admin Sidebar */}
       <aside className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col h-screen sticky top-0 hidden md:flex">
         <div className="h-16 flex items-center px-6 border-b border-slate-800 gap-3">
-          <div className="relative w-8 h-8 rounded-md overflow-hidden bg-white shadow-sm flex items-center justify-center">
-            <Image src="/logo-v2.png" alt="ReviewFlow Logo" fill className="object-contain" />
+          <div className="relative h-14 flex items-center">
+            <img src="/logo-v2.png" alt="ReppulseAI Logo" className="h-14 w-auto rounded-md object-contain" />
           </div>
           <span className="font-bold text-xl tracking-tighter text-white">Super Admin</span>
         </div>
@@ -127,8 +127,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Admin Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 sticky top-0 z-20 md:hidden">
-          <div className="flex items-center gap-2">
-            <img src="/logo-v2.png" alt="ReviewFlow Logo" className="w-8 h-8 object-contain" />
+          <div className="flex items-center gap-3">
+            <img src="/logo-v2.png" alt="ReppulseAI Logo" className="h-14 w-auto rounded-md object-contain" />
             <div className="font-bold text-xl text-white">Super Admin</div>
           </div>
           <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(true)} className="text-slate-300 hover:text-white">
@@ -140,8 +140,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {isMobileMenuOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950 md:hidden flex flex-col">
             <div className="h-16 flex items-center justify-between px-6 border-b border-slate-800">
-              <div className="flex items-center gap-2">
-                <img src="/logo-v2.png" alt="ReviewFlow Logo" className="w-8 h-8 object-contain" />
+              <div className="flex items-center gap-3">
+                <img src="/logo-v2.png" alt="ReppulseAI Logo" className="h-14 w-auto rounded-md object-contain" />
                 <span className="font-bold text-xl tracking-tighter text-white">Super Admin</span>
               </div>
               <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-300 hover:text-white">

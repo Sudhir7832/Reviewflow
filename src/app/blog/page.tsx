@@ -65,7 +65,7 @@ export default function BlogIndexPage() {
 
       <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <p>&copy; {new Date().getFullYear()} ReviewFlow. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} ReppulseAI. All rights reserved.</p>
         </div>
       </footer>
     </div>

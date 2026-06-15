@@ -12,7 +12,7 @@ export default function PrivacyPage() {
           <h2 className="text-2xl font-bold mt-8">1. Information We Collect</h2>
           <p>We collect basic business information (name, address, Google URL) to generate your QR codes and dashboard.</p>
           <h2 className="text-2xl font-bold mt-8">2. How We Use Your Data</h2>
-          <p>We use this data exclusively to provide the ReviewFlow service. We never sell your data to third parties.</p>
+          <p>We use this data exclusively to provide the ReppulseAI service. We never sell your data to third parties.</p>
           <h2 className="text-2xl font-bold mt-8">3. Customer Feedback</h2>
           <p>Private feedback intercepted by our Smart Gate is stored securely and only accessible by the business owner via their dashboard.</p>
         </div>

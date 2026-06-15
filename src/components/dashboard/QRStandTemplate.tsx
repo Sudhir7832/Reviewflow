@@ -45,12 +45,9 @@ export const QRStandTemplate = forwardRef<HTMLDivElement, QRStandTemplateProps>(
                 <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
               </div>
               
-              {/* ReviewFlow Branding on Top */}
-              <div className="flex items-center gap-2.5 z-10 mb-6 bg-black/20 px-5 py-2 rounded-full backdrop-blur-md border border-white/10 shadow-inner">
-                <div className="bg-white p-1 rounded-md flex items-center justify-center shadow-sm">
-                  <img src="/logo-v2.png" alt="ReviewFlow" className="w-5 h-5 object-contain" crossOrigin="anonymous" />
-                </div>
-                <span className="text-[14px] font-extrabold tracking-widest uppercase text-white">ReviewFlow Powered</span>
+              {/* ReppulseAI Branding on Top */}
+              <div className="z-10 mb-6 bg-black/20 p-3.5 rounded-[16px] backdrop-blur-md border border-white/10 shadow-inner flex items-center justify-center">
+                <img src="/logo-v2.png" alt="ReppulseAI" className="h-16 w-auto rounded-[8px] object-contain" crossOrigin="anonymous" />
               </div>
 
               <h1 className="text-[36px] font-black text-white tracking-tight text-center leading-[1.1] max-w-[360px] z-10 drop-shadow-md">
@@ -86,10 +83,9 @@ export const QRStandTemplate = forwardRef<HTMLDivElement, QRStandTemplateProps>(
           
           {template === "minimal" && (
              <div className="flex flex-col items-center mb-10 w-full relative pt-12">
-               {/* ReviewFlow Branding on Top */}
-               <div className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center gap-2.5 z-10 bg-slate-100 px-5 py-2 rounded-full border border-slate-200">
-                 <img src="/logo-v2.png" alt="ReviewFlow" className="w-7 h-7 object-contain" crossOrigin="anonymous" />
-                 <span className="text-[14px] font-extrabold tracking-widest uppercase text-slate-600">ReviewFlow Powered</span>
+               {/* ReppulseAI Branding on Top */}
+               <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10 bg-slate-100 p-3 rounded-[16px] border border-slate-200 flex items-center justify-center shadow-sm">
+                 <img src="/logo-v2.png" alt="ReppulseAI" className="h-14 w-auto rounded-[6px] object-contain" crossOrigin="anonymous" />
                </div>
                
                {logoUrl ? (
@@ -128,7 +124,7 @@ export const QRStandTemplate = forwardRef<HTMLDivElement, QRStandTemplateProps>(
           {/* QR Code Container */}
           <div className={`p-5 mb-10 relative ${template === 'classic' ? 'bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-slate-200' : 'bg-transparent'}`}>
             <QRCodeCanvas
-              value={qrUrl || "https://reviewflow.example.com"}
+              value={qrUrl || "https://reppulseai.example.com"}
               size={220}
               fgColor={color || "#0f172a"}
               level="H"

@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { blogPosts } from '@/lib/blog-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://reviewflow.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://reppulseai.com';
 
   const staticRoutes = [
     '',

@@ -13,12 +13,11 @@ export function Sidebar() {
 
   return (
     <aside className="w-64 bg-background border-r flex flex-col h-screen sticky top-0 hidden md:flex">
-      <div className="h-16 flex items-center px-6 border-b gap-3">
-        <div className="relative w-8 h-8 rounded-md overflow-hidden bg-white shadow-sm flex items-center justify-center">
-          <Image src="/logo-v2.png" alt="ReviewFlow Logo" fill className="object-contain" />
+      <Link href="/dashboard" className="flex items-center px-6 h-16 border-b border-slate-100">
+        <div className="relative w-full h-14 flex items-center">
+          <img src="/logo-v2.png" alt="ReppulseAI Logo" className="h-14 w-auto rounded-md object-contain" />
         </div>
-        <span className="font-bold text-xl tracking-tighter text-slate-900">ReviewFlow</span>
-      </div>
+      </Link>
       <nav className="flex-1 px-4 py-6 space-y-2">
         {routes.map((route) => (
           <Link

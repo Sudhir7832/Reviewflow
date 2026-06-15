@@ -40,7 +40,7 @@ export default function AdminOverview() {
     <div className="max-w-6xl mx-auto space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Platform Overview</h1>
-        <p className="text-slate-400">Monitor your entire ReviewFlow platform from 30,000 feet.</p>
+        <p className="text-slate-400">Monitor your entire ReppulseAI platform from 30,000 feet.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

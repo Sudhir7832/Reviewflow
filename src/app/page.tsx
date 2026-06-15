@@ -6,7 +6,7 @@ import { Footer } from "@/components/landing/Footer";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "ReviewFlow | Get 5-Star Reviews & Intercept the Bad Ones",
+  title: "ReppulseAI | Get 5-Star Reviews & Intercept the Bad Ones",
   description: "Protect your local business reputation. Our smart QR routing sends happy customers to Google and directs unhappy customers to a private feedback form.",
 };
 

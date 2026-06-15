@@ -27,7 +27,7 @@ Even if the customer is wrong, apologize that their experience didn't meet their
 ## 3. Take it Offline
 Provide a direct phone number or email address to resolve the issue privately. Once resolved, 70% of customers will gladly update their negative review to a positive one.
 
-*Of course, the best way to handle negative reviews is to intercept them before they are posted using ReviewFlow's smart QR routing!*
+*Of course, the best way to handle negative reviews is to intercept them before they are posted using ReppulseAI's smart QR routing!*
     `,
     publishedAt: "2026-05-10",
     author: "Alex Mitchell",

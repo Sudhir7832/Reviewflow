@@ -9,9 +9,8 @@ export async function Navbar() {
   return (
     <header className="fixed top-0 w-full z-50 border-b bg-background/80 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tighter">
-          <img src="/logo-v2.png" alt="ReviewFlow Logo" className="w-8 h-8 object-contain" />
-          ReviewFlow
+        <Link href="/" className="flex items-center gap-2">
+          <img src="/logo-v2.png" alt="ReppulseAI Logo" className="h-14 w-auto rounded-md object-contain" />
         </Link>
         <nav className="hidden md:flex gap-6 text-sm font-medium">
           <Link href="#features" className="hover:text-primary transition-colors">Features</Link>

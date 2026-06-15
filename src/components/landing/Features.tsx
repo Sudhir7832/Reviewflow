@@ -26,7 +26,7 @@ export function Features() {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Everything you need to grow your reputation</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            ReviewFlow simplifies the process of collecting Google reviews, turning your happy customers into your best marketers.
+            ReppulseAI simplifies the process of collecting Google reviews, turning your happy customers into your best marketers.
           </p>
         </div>
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
