@@ -12,15 +12,67 @@ import { motion } from "framer-motion";
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("profile");
   const [userEmail, setUserEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [isCheckoutLoading, setIsCheckoutLoading] = useState(false);
+  const [isPortalLoading, setIsPortalLoading] = useState(false);
+  const [subscription, setSubscription] = useState<any>(null);
   const supabase = createClient();
 
   useEffect(() => {
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user?.email) setUserEmail(user.email);
+      if (user?.user_metadata?.first_name) setFirstName(user.user_metadata.first_name);
+      if (user?.user_metadata?.last_name) setLastName(user.user_metadata.last_name);
+
+      if (user) {
+        const { data: sub } = await supabase.from("subscriptions").select("*").eq("user_id", user.id).single();
+        if (sub) setSubscription(sub);
+      }
     };
     fetchUser();
   }, []);
+
+  const handleSaveProfile = async () => {
+    setIsSaving(true);
+    await supabase.auth.updateUser({
+      data: { first_name: firstName, last_name: lastName }
+    });
+    setIsSaving(false);
+  };
+
+  const handleCheckout = async (priceId: string) => {
+    try {
+      setIsCheckoutLoading(true);
+      const res = await fetch("/api/stripe/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsCheckoutLoading(false);
+    }
+  };
+
+  const handlePortal = async () => {
+    try {
+      setIsPortalLoading(true);
+      const res = await fetch("/api/stripe/create-portal", { method: "POST" });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsPortalLoading(false);
+    }
+  };
+
   const [isYearly, setIsYearly] = useState(false);
 
   useEffect(() => {
@@ -51,9 +103,10 @@ export default function SettingsPage() {
       name: "Pro",
       description: "Supercharge your reviews with AI generation.",
       price: isYearly ? 249 : 299,
+      priceId: isYearly ? process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID : process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID,
       icon: <Crown className="w-5 h-5 text-primary" />,
       features: ["Up to 5 Business Locations", "Unlimited QR Scans", "Unlimited Smart Gate", "AI Review Generation", "Custom Branding"],
-      cta: "Upgrade to Pro",
+      cta: subscription?.status === "active" ? "Current Plan" : "Upgrade to Pro",
       popular: true,
       buttonVariant: "default"
     },
@@ -114,11 +167,11 @@ export default function SettingsPage() {
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>First Name</Label>
-                      <Input placeholder="John" defaultValue="John" />
+                      <Input placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                     </div>
                     <div className="space-y-2">
                       <Label>Last Name</Label>
-                      <Input placeholder="Doe" defaultValue="Doe" />
+                      <Input placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
                     </div>
                   </div>
                   <div className="space-y-2">
@@ -127,7 +180,9 @@ export default function SettingsPage() {
                   </div>
                 </CardContent>
                 <CardFooter className="bg-muted/30 border-t border-border/50 rounded-b-xl py-4 flex justify-end">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700">Save Changes</Button>
+                  <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={handleSaveProfile} disabled={isSaving}>
+                    {isSaving ? "Saving..." : "Save Changes"}
+                  </Button>
                 </CardFooter>
               </Card>
             </div>
@@ -187,14 +242,20 @@ export default function SettingsPage() {
                   <div className="flex items-center justify-between p-6 bg-muted/30 rounded-xl border border-border/50 mb-6">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <h3 className="text-xl font-bold text-foreground">Starter Plan</h3>
+                        <h3 className="text-xl font-bold text-foreground">{subscription?.status === "active" ? "Pro Plan" : "Starter Plan"}</h3>
                         <span className="bg-primary/20 text-primary text-xs font-bold px-2 py-0.5 rounded-full">Active</span>
                       </div>
-                      <p className="text-sm text-muted-foreground">Free forever. 1 Location limit.</p>
+                      <p className="text-sm text-muted-foreground">{subscription?.status === "active" ? "Premium AI features unlocked." : "Free forever. 1 Location limit."}</p>
                     </div>
-                    <Button onClick={() => setActiveTab("upgrade")} className="bg-emerald-600 hover:bg-emerald-700">
-                      Upgrade
-                    </Button>
+                    {subscription?.status === "active" ? (
+                      <Button onClick={handlePortal} disabled={isPortalLoading} variant="outline">
+                        {isPortalLoading ? "Loading..." : "Manage Billing"}
+                      </Button>
+                    ) : (
+                      <Button onClick={() => setActiveTab("upgrade")} className="bg-emerald-600 hover:bg-emerald-700">
+                        Upgrade
+                      </Button>
+                    )}
                   </div>
 
                   <div className="space-y-4">
@@ -282,14 +343,16 @@ export default function SettingsPage() {
                       </ul>
                       
                       <Button 
-                        variant={plan.buttonVariant as any} 
-                        className={`w-full h-10 rounded-xl text-sm font-bold transition-all ${
-                          plan.popular 
-                          ? "bg-emerald-500 hover:bg-emerald-600 text-white shadow-md hover:-translate-y-0.5" 
-                          : "bg-card border-2 border-border text-foreground/90 hover:bg-muted/30"
-                        }`}
+                        className="w-full h-12 text-base font-bold" 
+                        variant={plan.buttonVariant as any}
+                        disabled={isCheckoutLoading || plan.name === "Starter" || plan.cta === "Contact Sales" || subscription?.status === "active"}
+                        onClick={() => {
+                          if (plan.name === "Pro" && plan.priceId) {
+                            handleCheckout(plan.priceId);
+                          }
+                        }}
                       >
-                        {plan.cta}
+                        {isCheckoutLoading && plan.name === "Pro" ? "Redirecting..." : plan.cta}
                       </Button>
                     </div>
                   </motion.div>

@@ -12,6 +12,8 @@ export default function ReviewScanPage() {
   const { businessId } = useParams();
   const [businessData, setBusinessData] = useState<any>(null);
   const [interceptCount, setInterceptCount] = useState<number>(0);
+  const [globalInterceptLimit, setGlobalInterceptLimit] = useState<number>(5);
+  const [isPro, setIsPro] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   
   const [rating, setRating] = useState<number>(0);
@@ -34,7 +36,20 @@ export default function ReviewScanPage() {
   const fetchBusiness = async () => {
     if (!businessId) return;
     const { data } = await supabase.from("businesses").select("*").eq("id", businessId).single();
-    if (data) setBusinessData(data);
+    
+    if (data) {
+      setBusinessData(data);
+      
+      // Check subscription
+      const { data: subData } = await supabase.from("subscriptions").select("status").eq("user_id", data.user_id).single();
+      if (subData?.status === "active") setIsPro(true);
+    }
+    
+    // Fetch global setting for free tier limit
+    const { data: settingData } = await supabase.from("global_settings").select("setting_value").eq("setting_key", "free_plan_intercept_limit").single();
+    if (settingData?.setting_value) {
+      setGlobalInterceptLimit(parseInt(settingData.setting_value, 10));
+    }
     
     // Check intercept limit for free tier securely using RPC
     const { data: count, error } = await supabase.rpc("get_intercept_count", { b_id: businessId });
@@ -62,8 +77,8 @@ export default function ReviewScanPage() {
     }]);
   };
 
-  // Free plan is limited to 5 intercepts (for testing)
-  const limitReached = (businessData?.plan_tier === 'free' || !businessData?.plan_tier) && interceptCount >= 5;
+  // Free plan is limited dynamically. Pro plan is unlimited.
+  const limitReached = !isPro && interceptCount >= globalInterceptLimit;
   const isIntercepted = rating > 0 && businessData?.gate_enabled && rating <= businessData?.gate_threshold && !limitReached;
 
   useEffect(() => {

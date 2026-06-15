@@ -39,6 +39,19 @@ export async function toggleAdminPlan(id: string, currentPlan: string) {
   await supabaseAdmin.from('profiles').update({ plan_tier: newPlan }).eq('id', id);
 }
 
+export async function getGlobalSetting(key: string, defaultValue: any) {
+  const { data } = await supabaseAdmin.from('global_settings').select('setting_value').eq('setting_key', key).single();
+  return data ? data.setting_value : defaultValue;
+}
+
+export async function updateGlobalSetting(key: string, value: any) {
+  await supabaseAdmin.from('global_settings').upsert({
+    setting_key: key,
+    setting_value: value,
+    updated_at: new Date().toISOString()
+  }, { onConflict: 'setting_key' });
+}
+
 export async function toggleAdminStatus(id: string, currentStatus: string) {
   const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
   await supabaseAdmin.from('profiles').update({ status: newStatus }).eq('id', id);

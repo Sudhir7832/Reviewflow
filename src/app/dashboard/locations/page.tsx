@@ -63,14 +63,14 @@ export default function LocationsPage() {
     }
     setUser(user);
 
-    // 2. Get User Profile for Plan Limits
-    const { data: profileData } = await supabase
-      .from('profiles')
-      .select('plan_tier')
-      .eq('id', user.id)
+    // 2. Get User Subscription for Plan Limits
+    const { data: subscriptionData } = await supabase
+      .from('subscriptions')
+      .select('status, plan_id')
+      .eq('user_id', user.id)
       .single();
     
-    if (profileData) setProfile(profileData);
+    if (subscriptionData) setProfile({ plan_tier: subscriptionData.status === 'active' ? 'pro' : 'free' });
 
     // 3. Get Locations for this user
     const { data, error } = await supabase

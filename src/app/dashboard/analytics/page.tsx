@@ -18,6 +18,7 @@ export default function AnalyticsPage() {
   const [pieData, setPieData] = useState<any[]>([]);
   const [barData, setBarData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPro, setIsPro] = useState(false);
 
   const supabase = createClient();
 
@@ -28,6 +29,16 @@ export default function AnalyticsPage() {
   const fetchAnalytics = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
+
+    const { data: subscription } = await supabase
+      .from("subscriptions")
+      .select("status")
+      .eq("user_id", user.id)
+      .single();
+      
+    if (subscription?.status === "active") {
+      setIsPro(true);
+    }
 
     const { data: scans } = await supabase
       .from("scans")
@@ -93,7 +104,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Upgrade Banner for Free Tier Limits */}
-      {stats.intercepted >= 5 && (
+      {stats.intercepted >= 5 && !isPro && (
         <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between shadow-sm">
           <div className="flex items-center gap-4 mb-4 sm:mb-0">
             <div className="bg-amber-100 p-3 rounded-full shrink-0">

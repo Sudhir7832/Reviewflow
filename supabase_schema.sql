@@ -151,3 +151,38 @@ BEGIN
   WHERE id = s_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- PHASE 6 ADDITIONS (Stripe Subscriptions)
+CREATE TABLE IF NOT EXISTS public.subscriptions (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) NOT NULL UNIQUE,
+    stripe_customer_id TEXT,
+    stripe_subscription_id TEXT,
+    plan_id TEXT,
+    status TEXT,
+    current_period_end TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Users can read own subscriptions" ON public.subscriptions;
+CREATE POLICY "Users can read own subscriptions" ON public.subscriptions FOR SELECT USING (auth.uid() = user_id);
+
+-- PHASE 7 ADDITIONS (Global Admin Settings)
+CREATE TABLE IF NOT EXISTS public.global_settings (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    setting_key TEXT UNIQUE NOT NULL,
+    setting_value JSONB NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Insert default limit of 5
+INSERT INTO public.global_settings (setting_key, setting_value) 
+VALUES ('free_plan_intercept_limit', '5') 
+ON CONFLICT (setting_key) DO NOTHING;
+
+ALTER TABLE public.global_settings ENABLE ROW LEVEL SECURITY;
+-- Anyone can read settings (needed for public scan pages)
+DROP POLICY IF EXISTS "Public can read global settings" ON public.global_settings;
+CREATE POLICY "Public can read global settings" ON public.global_settings FOR SELECT USING (true);
