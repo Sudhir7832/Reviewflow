@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Loader2, Star, CheckCircle2, Copy, MapPin, MessageSquare, Send } from "lucide-react";
+import { Loader2, Star, CheckCircle2, Copy, MapPin, MessageSquare, Send, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ReviewScanPage() {
@@ -20,6 +20,8 @@ export default function ReviewScanPage() {
   const [hoverRating, setHoverRating] = useState<number>(0);
   
   const [reviewDraft, setReviewDraft] = useState("");
+  const [reviewOptions, setReviewOptions] = useState<string[]>([]);
+  const [currentOptionIndex, setCurrentOptionIndex] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   
@@ -101,7 +103,13 @@ export default function ReviewScanPage() {
         })
       });
       const data = await res.json();
-      setReviewDraft(data.review || "I had a great experience here!");
+      if (data.reviews && data.reviews.length > 0) {
+        setReviewOptions(data.reviews);
+        setCurrentOptionIndex(0);
+        setReviewDraft(data.reviews[0]);
+      } else {
+        setReviewDraft(data.review || "I had a great experience here!");
+      }
     } catch (e) {
       setReviewDraft("I had a great experience here and highly recommend it!");
     }
@@ -265,15 +273,56 @@ export default function ReviewScanPage() {
                     )}
                     
                     <div className="bg-slate-50 rounded-2xl border border-slate-200 shadow-inner overflow-hidden transition-all relative group">
+                      {!isIntercepted && reviewOptions.length > 1 && (
+                        <div className="flex items-center justify-between px-4 py-2 bg-slate-100 border-b border-slate-200">
+                          <button 
+                            onClick={() => {
+                              if (currentOptionIndex > 0) {
+                                const newIdx = currentOptionIndex - 1;
+                                setCurrentOptionIndex(newIdx);
+                                setReviewDraft(reviewOptions[newIdx]);
+                                setIsCopied(false);
+                              }
+                            }}
+                            disabled={currentOptionIndex === 0}
+                            className="p-1 text-slate-500 hover:text-slate-800 disabled:opacity-30 disabled:hover:text-slate-500 transition-colors"
+                          >
+                            <ChevronLeft className="w-5 h-5" />
+                          </button>
+                          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                            Option {currentOptionIndex + 1} of {reviewOptions.length}
+                          </span>
+                          <button 
+                            onClick={() => {
+                              if (currentOptionIndex < reviewOptions.length - 1) {
+                                const newIdx = currentOptionIndex + 1;
+                                setCurrentOptionIndex(newIdx);
+                                setReviewDraft(reviewOptions[newIdx]);
+                                setIsCopied(false);
+                              }
+                            }}
+                            disabled={currentOptionIndex === reviewOptions.length - 1}
+                            className="p-1 text-slate-500 hover:text-slate-800 disabled:opacity-30 disabled:hover:text-slate-500 transition-colors"
+                          >
+                            <ChevronRight className="w-5 h-5" />
+                          </button>
+                        </div>
+                      )}
                       <textarea
                         className="w-full h-36 p-5 bg-transparent border-none resize-none text-slate-700 leading-relaxed text-sm sm:text-base font-medium focus:outline-none"
                         value={reviewDraft}
                         onChange={(e) => {
-                          setReviewDraft(e.target.value);
+                          const val = e.target.value;
+                          setReviewDraft(val);
                           setIsCopied(false);
+                          if (reviewOptions.length > 0) {
+                            const newOpts = [...reviewOptions];
+                            newOpts[currentOptionIndex] = val;
+                            setReviewOptions(newOpts);
+                          }
                         }}
                       />
-                      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-white px-2 py-1 rounded-md shadow-sm border border-slate-100">
                           Editable
                         </span>
